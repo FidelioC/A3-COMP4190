@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -9,21 +10,8 @@ CONST_VALUE_MAX = 255
 
 
 # Step 1: Noisy image Y
-def noisy_image_Y():
-    image = np.array(
-        [
-            [12.4, 15.1, 18.7, 17.9, 20.2, 23.8, 26.0, 24.1, 21.3, 18.9],
-            [14.8, 19.5, 22.2, 25.7, 28.0, 31.2, 33.9, 30.4, 26.8, 22.0],
-            [16.9, 21.0, 30.5, 55.2, 79.1, 82.4, 57.6, 33.1, 28.2, 24.6],
-            [18.2, 24.3, 58.7, 120.5, 168.9, 170.1, 123.4, 62.2, 31.6, 26.9],
-            [20.1, 28.8, 83.4, 171.2, 219.0, 221.5, 173.8, 85.1, 34.0, 28.3],
-            [21.0, 29.6, 86.1, 169.8, 220.7, 218.1, 170.5, 87.9, 36.2, 29.9],
-            [19.4, 25.7, 60.9, 122.8, 171.0, 172.6, 121.4, 61.0, 33.0, 27.4],
-            [17.0, 21.8, 32.9, 59.4, 84.0, 80.7, 56.8, 34.2, 28.8, 24.9],
-            [15.6, 18.9, 22.6, 27.8, 31.5, 30.0, 28.1, 26.5, 23.4, 20.6],
-            [13.9, 16.0, 18.3, 20.5, 22.9, 23.1, 22.0, 20.7, 19.1, 17.2],
-        ]
-    )
+def noisy_image_Y(filepath):
+    image = np.loadtxt(filepath)
     return image
 
 
@@ -86,7 +74,11 @@ def gibbs_sampling(
 
 
 # --- run ---
-noisy_image_Y = noisy_image_Y()
+if len(sys.argv) < 2:
+    print("Usage: python problem1.py <input_file.txt>")
+    sys.exit(1)
+
+noisy_image_Y = noisy_image_Y(sys.argv[1])
 
 fig, axes = plt.subplots(1, 2, figsize=(10, 5))
 
@@ -105,4 +97,5 @@ axes[1].imshow(
 axes[1].set_title("Denoised Output X")
 axes[1].axis("off")
 plt.tight_layout()
+plt.savefig("problem1_output.png", dpi=150, bbox_inches="tight")
 plt.show()
